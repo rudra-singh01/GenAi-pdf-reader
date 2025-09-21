@@ -45,37 +45,37 @@ const ResponseDisplay = ({ response }) => {
   return (
     <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-2xl shadow-xl overflow-hidden">
       {/* Header */}
-      <div className="backdrop-blur-sm bg-slate-100/50 border-b border-white/30 px-8 py-6">
-        <div className="flex items-center justify-between">
+      <div className="backdrop-blur-sm bg-slate-100/50 border-b border-white/30 px-4 lg:px-8 py-4 lg:py-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full bg-emerald-100/80 backdrop-blur-sm flex items-center justify-center">
-              <CheckCircle className="h-6 w-6 text-emerald-600" />
+            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-emerald-100/80 backdrop-blur-sm flex items-center justify-center">
+              <CheckCircle className="h-5 w-5 lg:h-6 lg:w-6 text-emerald-600" />
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-slate-800">Analysis Complete</h3>
-              <p className="text-sm text-slate-600">Generated with AI precision</p>
+              <h3 className="text-lg lg:text-2xl font-semibold text-slate-800">Analysis Complete</h3>
+              <p className="text-xs lg:text-sm text-slate-600">Generated with AI precision</p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             <button
               onClick={copyToClipboard}
-              className="backdrop-blur-sm bg-white/60 hover:bg-white/80 border border-white/30 text-slate-700 px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center text-sm font-medium shadow-sm hover:shadow-md"
+              className="backdrop-blur-sm bg-white/60 hover:bg-white/80 border border-white/30 text-slate-700 px-3 lg:px-4 py-2 lg:py-2.5 rounded-xl transition-all duration-200 flex items-center text-xs lg:text-sm font-medium shadow-sm hover:shadow-md"
             >
               {copied ? (
-                <CheckCircle className="h-4 w-4 mr-2 text-emerald-600" />
+                <CheckCircle className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2 text-emerald-600" />
               ) : (
-                <Copy className="h-4 w-4 mr-2" />
+                <Copy className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
               )}
-              {copied ? 'Copied!' : 'Copy'}
+              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
             </button>
-            
+
             <button
               onClick={downloadResponse}
-              className="backdrop-blur-sm bg-blue-100/60 hover:bg-blue-100/80 border border-blue-200/50 text-blue-700 px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center text-sm font-medium shadow-sm hover:shadow-md"
+              className="backdrop-blur-sm bg-blue-100/60 hover:bg-blue-100/80 border border-blue-200/50 text-blue-700 px-3 lg:px-4 py-2 lg:py-2.5 rounded-xl transition-all duration-200 flex items-center text-xs lg:text-sm font-medium shadow-sm hover:shadow-md"
             >
-              <Download className="h-4 w-4 mr-2" />
-              Download
+              <Download className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
+              <span className="hidden sm:inline">Download</span>
             </button>
           </div>
         </div>
@@ -83,30 +83,32 @@ const ResponseDisplay = ({ response }) => {
 
       {/* Document Links */}
       {(response.pdf_url || response.preview_image) && (
-        <div className="backdrop-blur-sm bg-slate-50/40 border-b border-white/20 px-8 py-5">
-          <h4 className="text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wide">Document Access</h4>
-          <div className="flex items-center space-x-6">
+        <div className="backdrop-blur-sm bg-slate-50/40 border-b border-white/20 px-4 lg:px-8 py-4 lg:py-5">
+          <h4 className="text-xs lg:text-sm font-semibold text-slate-700 mb-3 lg:mb-4 uppercase tracking-wide">Document Access</h4>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 lg:space-x-6">
             {response.pdf_url && (
               <button
                 onClick={openPDF}
-                className="flex items-center text-slate-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 group"
+                className="flex items-center text-slate-600 hover:text-blue-700 text-xs lg:text-sm font-medium transition-colors duration-200 group w-full sm:w-auto"
               >
-                <div className="w-8 h-8 rounded-lg bg-red-100/80 flex items-center justify-center mr-3 group-hover:bg-red-200/80 transition-colors">
-                  <ExternalLink className="h-4 w-4 text-red-600" />
+                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg bg-red-100/80 flex items-center justify-center mr-2 lg:mr-3 group-hover:bg-red-200/80 transition-colors">
+                  <ExternalLink className="h-3 w-3 lg:h-4 lg:w-4 text-red-600" />
                 </div>
-                View Original PDF
+                <span className="hidden sm:inline">View Original PDF</span>
+                <span className="sm:hidden">Original PDF</span>
               </button>
             )}
-            
+
             {response.preview_image && (
               <button
                 onClick={openPreview}
-                className="flex items-center text-slate-600 hover:text-emerald-700 text-sm font-medium transition-colors duration-200 group"
+                className="flex items-center text-slate-600 hover:text-emerald-700 text-xs lg:text-sm font-medium transition-colors duration-200 group w-full sm:w-auto"
               >
-                <div className="w-8 h-8 rounded-lg bg-emerald-100/80 flex items-center justify-center mr-3 group-hover:bg-emerald-200/80 transition-colors">
-                  <Eye className="h-4 w-4 text-emerald-600" />
+                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg bg-emerald-100/80 flex items-center justify-center mr-2 lg:mr-3 group-hover:bg-emerald-200/80 transition-colors">
+                  <Eye className="h-3 w-3 lg:h-4 lg:w-4 text-emerald-600" />
                 </div>
-                View Preview Image
+                <span className="hidden sm:inline">View Preview Image</span>
+                <span className="sm:hidden">Preview</span>
               </button>
             )}
           </div>
@@ -114,8 +116,8 @@ const ResponseDisplay = ({ response }) => {
       )}
 
       {/* Response Content */}
-      <div className="p-8">
-        <div className="prose prose-slate max-w-none">
+      <div className="p-4 lg:p-8">
+        <div className="prose prose-sm lg:prose-slate max-w-none">
           <ReactMarkdown
             components={{
               code({ node, inline, className, children, ...props }) {
@@ -203,13 +205,13 @@ const ResponseDisplay = ({ response }) => {
       </div>
 
       {/* Footer */}
-      <div className="backdrop-blur-sm bg-slate-50/40 border-t border-white/20 px-8 py-4">
+      <div className="backdrop-blur-sm bg-slate-50/40 border-t border-white/20 px-4 lg:px-8 py-3 lg:py-4">
         <div className="flex items-center justify-center">
           <div className="flex items-center space-x-2 text-slate-500">
-            <div className="w-5 h-5 rounded bg-slate-300/60 flex items-center justify-center">
-              <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+            <div className="w-4 h-4 lg:w-5 lg:h-5 rounded bg-slate-300/60 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 bg-slate-500 rounded-full"></div>
             </div>
-            <span className="text-sm font-medium">Analysis powered by Google Gemini AI</span>
+            <span className="text-xs lg:text-sm font-medium">Analysis powered by Google Gemini AI</span>
           </div>
         </div>
       </div>

@@ -84,6 +84,17 @@ textarea:focus {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Mobile-first responsive design */
+@media (max-width: 640px) {
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px);
+  }
+
+  .backdrop-blur-lg {
+    backdrop-filter: blur(12px);
+  }
+}
+
 /* Prose styling for markdown with glassmorphism */
 .prose {
   color: #475569;
@@ -96,6 +107,38 @@ textarea:focus {
 .prose h4 {
   color: #1e293b;
   font-weight: 600;
+}
+
+/* Mobile prose adjustments */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .prose h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose p {
+    margin-bottom: 0.75rem;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-bottom: 0.75rem;
+  }
 }
 
 .prose code {
