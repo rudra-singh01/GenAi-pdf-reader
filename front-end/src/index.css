@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+/* Glassmorphism backdrop filter support */
+.backdrop-blur-xs {
+  backdrop-filter: blur(2px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+
+/* Custom scrollbar with glassmorphism */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.6);
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.8);
+}
+
+/* Smooth transitions with glassmorphism */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Focus styles with glassmorphism */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+/* Glass card effects */
+.glass-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card-dark {
+  backdrop-filter: blur(12px);
+  background: rgba(71, 85, 105, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Prose styling for markdown with glassmorphism */
+.prose {
+  color: #475569;
+  max-width: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.prose code {
+  color: #dc2626;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(4px);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.375rem;
+  font-size: 0.875em;
+  border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.prose pre {
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(8px);
+  color: #f8fafc;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  overflow-x: auto;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.prose blockquote {
+  border-left: 4px solid #64748b;
+  padding-left: 1rem;
+  background: rgba(248, 250, 252, 0.6);
+  backdrop-filter: blur(4px);
+  margin: 1rem 0;
+  font-style: italic;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+}
