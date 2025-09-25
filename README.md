@@ -18,19 +18,23 @@ A full-stack web application that leverages AI to analyze PDF documents and prov
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** - Modern React with hooks
+- **React 19** - Modern React with hooks
 - **Vite** - Fast build tool and development server
 - **Tailwind CSS** - Utility-first CSS framework
 - **Clerk** - Authentication and user management
 - **React Markdown** - Markdown rendering with syntax highlighting
 - **React Hot Toast** - Beautiful toast notifications
+- **Axios** - HTTP client for API requests
+- **Lucide React** - Beautiful icons
 
 ### Backend
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web application framework
 - **Multer** - File upload handling
-- **Cloudinary** - Cloud-based image and video management
+- **Bytescale SDK** - Cloud-based file storage and management
 - **Google Gemini AI** - Advanced AI for document analysis
+- **MongoDB** - Database for storing analysis history
+- **Mongoose** - MongoDB object modeling
 - **CORS** - Cross-origin resource sharing
 - **dotenv** - Environment variable management
 
@@ -41,11 +45,12 @@ Before you begin, ensure you have the following installed and configured:
 - **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
 - **npm** or **yarn** - Package manager
 - **Git** - Version control system
+- **MongoDB** - Database (local installation or MongoDB Atlas)
 
 ### Required Accounts
 - **Clerk Account** - For authentication ([Sign up here](https://clerk.com))
 - **Google AI Studio Account** - For Gemini AI API ([Get API key](https://makersuite.google.com/app/apikey))
-- **Cloudinary Account** - For file storage ([Sign up here](https://cloudinary.com))
+- **Bytescale Account** - For file storage ([Sign up here](https://www.bytescale.com))
 
 ## 🔧 Installation
 
@@ -69,10 +74,13 @@ Create a `.env` file in the `back-end` directory:
 # Google Gemini AI Configuration
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+# Bytescale Configuration
+BYTESCALE_API_KEY=your_bytescale_api_key_here
+
+# MongoDB Configuration
+MONGODB_URI=mongodb://localhost:27017/ai-document-analyzer
+# Or for MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-document-analyzer
 
 # Server Configuration
 PORT=3000
@@ -112,11 +120,24 @@ VITE_API_BASE_URL=http://localhost:3000
 2. Create a new API key
 3. Update the `GEMINI_API_KEY` in your backend `.env` file
 
-### Cloudinary Setup
+### Bytescale Setup
 
-1. Sign up at [Cloudinary](https://cloudinary.com)
-2. Get your cloud name, API key, and API secret from the dashboard
-3. Update the Cloudinary variables in your backend `.env` file
+1. Sign up at [Bytescale](https://www.bytescale.com)
+2. Create a new account and get your API key
+3. Update the `BYTESCALE_API_KEY` in your backend `.env` file
+
+### MongoDB Setup
+
+**Option 1: Local MongoDB**
+1. Install MongoDB locally
+2. Start MongoDB service
+3. Use `mongodb://localhost:27017/ai-document-analyzer` as your connection string
+
+**Option 2: MongoDB Atlas (Recommended)**
+1. Sign up at [MongoDB Atlas](https://www.mongodb.com/atlas)
+2. Create a new cluster
+3. Get your connection string
+4. Update the `MONGODB_URI` in your backend `.env` file
 
 ## 🚀 Usage
 
@@ -145,6 +166,7 @@ VITE_API_BASE_URL=http://localhost:3000
    - "What are the key points?"
    - "Extract important information"
    - "What is this document about?"
+   - "List the main topics discussed"
 4. **Analyze**: Click "Analyze Document" and wait for the AI response
 5. **View Results**: See formatted responses with options to copy, download, or view the original PDF
 
@@ -167,9 +189,15 @@ ai-document-analyzer/
 │   ├── .env.local             # Frontend environment variables
 │   └── package.json           # Frontend dependencies
 ├── back-end/                  # Node.js backend application
-│   ├── routes/                # API routes
-│   ├── middleware/            # Custom middleware
-│   ├── utils/                 # Utility functions
+│   ├── src/
+│   │   ├── controllers/       # API controllers
+│   │   │   └── ai.controller.js
+│   │   ├── libs/              # Library functions
+│   │   │   ├── gemini.js      # Gemini AI integration
+│   │   │   └── bytescale.js   # Bytescale file upload
+│   │   ├── model/             # Database models
+│   │   │   └── ai.model.js    # AI analysis model
+│   │   └── routes/            # API routes
 │   ├── .env                   # Backend environment variables
 │   ├── server.js              # Main server file
 │   └── package.json           # Backend dependencies
@@ -185,7 +213,7 @@ http://localhost:3000
 
 ### Endpoints
 
-#### POST `/api/analyze`
+#### POST `/api/ai/upload`
 Analyze a PDF document with AI
 
 **Request:**
@@ -198,10 +226,21 @@ Analyze a PDF document with AI
 **Response:**
 ```json
 {
-  "success": true,
-  "analysis": "AI-generated analysis text",
-  "fileUrl": "https://cloudinary-url.com/file.pdf",
-  "previewImages": ["image1.jpg", "image2.jpg"]
+  "message": "File processed successfully",
+  "fileUrl": "https://bytescale-url.com/file.pdf",
+  "analysis": "AI-generated analysis text based on the prompt",
+  "uploadResponse": {
+    "fileUrl": "https://bytescale-url.com/file.pdf",
+    "filePath": "/uploads/filename.pdf"
+  }
+}
+```
+
+**Error Response:**
+```json
+{
+  "message": "Error description",
+  "error": "Detailed error message"
 }
 ```
 
@@ -265,24 +304,31 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 3. **File Upload Problems:**
    - Only PDF files are supported
-   - Check your Cloudinary configuration
+   - Check your Bytescale configuration and API key
    - Verify the backend can handle multipart/form-data
 
 4. **AI Analysis Issues:**
    - Verify your Gemini API key is valid and has sufficient quota
    - Check that the API key has the necessary permissions
    - Ensure your document is readable and not corrupted
+   - Try with smaller PDF files if experiencing timeouts
+
+5. **Database Connection Issues:**
+   - Verify MongoDB is running (if using local installation)
+   - Check MongoDB Atlas connection string (if using cloud)
+   - Ensure database permissions are correctly configured
 
 ### Resources
 
 - [Clerk Documentation](https://clerk.com/docs)
 - [Google Gemini AI Documentation](https://ai.google.dev/docs)
-- [Cloudinary Documentation](https://cloudinary.com/documentation)
+- [Bytescale Documentation](https://www.bytescale.com/docs)
 - [React Documentation](https://react.dev)
 - [Express.js Documentation](https://expressjs.com)
+- [MongoDB Documentation](https://docs.mongodb.com)
 
 ---
 
-**Made with ❤️ by Rudra**
+**Made with ❤️ by Rudra **
 
 ⭐ If you found this project helpful, please give it a star!

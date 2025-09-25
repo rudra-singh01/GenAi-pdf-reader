@@ -14,25 +14,25 @@ const initializeGemini = () => {
   return genAI;
 };
 const PRETEXT = `
-You are an AI assistant that analyzes PDF documents from preview images.
+You are an AI assistant that analyzes PDF documents.
 The user will provide:
-1. A PDF converted into one or more images.
+1. A PDF document.
 2. A prompt describing the task.
 
 Your responsibilities:
-- Extract useful info from the document images.
+- Extract useful information from the PDF document.
 - Summarize, extract key points, answer questions, or explain as requested.
-- If info is missing, clearly state that.
+- If information is missing, clearly state that.
+- Provide detailed and accurate responses based on the document content.
 `;
 
-export const analyzeImageWithPrompt = async (imageUrl, prompt) => {
+export const analyzePdfWithPrompt = async (pdfUrl, prompt) => {
   try {
-    // Initialize Gemini AI if not already done
     const geminiAI = initializeGemini();
     const model = geminiAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Fetch the image from URL and convert to base64
-    const response = await fetch(imageUrl);
+    // Fetch the PDF from URL
+    const response = await fetch(pdfUrl);
     const arrayBuffer = await response.arrayBuffer();
     const base64String = Buffer.from(arrayBuffer).toString('base64');
 
@@ -41,7 +41,7 @@ export const analyzeImageWithPrompt = async (imageUrl, prompt) => {
       {
         inlineData: {
           data: base64String,
-          mimeType: "image/jpeg"
+          mimeType: "application/pdf"
         }
       }
     ]);

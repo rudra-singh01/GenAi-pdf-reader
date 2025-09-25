@@ -13,10 +13,6 @@ const aiSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    preview_url: {
-        type: String,
-        required: false,
-    }
 },{
     timestamps: true,
 })

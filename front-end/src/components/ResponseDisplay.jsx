@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Copy, Download, Eye, ExternalLink, CheckCircle } from 'lucide-react'
+import { Copy, Download, ExternalLink, CheckCircle } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -10,7 +10,7 @@ const ResponseDisplay = ({ response }) => {
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(response.response)
+      await navigator.clipboard.writeText(response.analysis)
       setCopied(true)
       toast.success('Response copied to clipboard!')
       setTimeout(() => setCopied(false), 2000)
@@ -21,7 +21,7 @@ const ResponseDisplay = ({ response }) => {
 
   const downloadResponse = () => {
     const element = document.createElement('a')
-    const file = new Blob([response.response], { type: 'text/plain' })
+    const file = new Blob([response.analysis], { type: 'text/plain' })
     element.href = URL.createObjectURL(file)
     element.download = 'ai-analysis.txt'
     document.body.appendChild(element)
@@ -31,14 +31,8 @@ const ResponseDisplay = ({ response }) => {
   }
 
   const openPDF = () => {
-    if (response.pdf_url) {
-      window.open(response.pdf_url, '_blank')
-    }
-  }
-
-  const openPreview = () => {
-    if (response.preview_image) {
-      window.open(response.preview_image, '_blank')
+    if (response.fileUrl) {
+      window.open(response.fileUrl, '_blank')
     }
   }
 
@@ -82,35 +76,20 @@ const ResponseDisplay = ({ response }) => {
       </div>
 
       {/* Document Links */}
-      {(response.pdf_url || response.preview_image) && (
+      {response.fileUrl && (
         <div className="backdrop-blur-sm bg-slate-50/40 border-b border-white/20 px-4 lg:px-8 py-4 lg:py-5">
           <h4 className="text-xs lg:text-sm font-semibold text-slate-700 mb-3 lg:mb-4 uppercase tracking-wide">Document Access</h4>
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 lg:space-x-6">
-            {response.pdf_url && (
-              <button
-                onClick={openPDF}
-                className="flex items-center text-slate-600 hover:text-blue-700 text-xs lg:text-sm font-medium transition-colors duration-200 group w-full sm:w-auto"
-              >
-                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg bg-red-100/80 flex items-center justify-center mr-2 lg:mr-3 group-hover:bg-red-200/80 transition-colors">
-                  <ExternalLink className="h-3 w-3 lg:h-4 lg:w-4 text-red-600" />
-                </div>
-                <span className="hidden sm:inline">View Original PDF</span>
-                <span className="sm:hidden">Original PDF</span>
-              </button>
-            )}
-
-            {response.preview_image && (
-              <button
-                onClick={openPreview}
-                className="flex items-center text-slate-600 hover:text-emerald-700 text-xs lg:text-sm font-medium transition-colors duration-200 group w-full sm:w-auto"
-              >
-                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg bg-emerald-100/80 flex items-center justify-center mr-2 lg:mr-3 group-hover:bg-emerald-200/80 transition-colors">
-                  <Eye className="h-3 w-3 lg:h-4 lg:w-4 text-emerald-600" />
-                </div>
-                <span className="hidden sm:inline">View Preview Image</span>
-                <span className="sm:hidden">Preview</span>
-              </button>
-            )}
+            <button
+              onClick={openPDF}
+              className="flex items-center text-slate-600 hover:text-blue-700 text-xs lg:text-sm font-medium transition-colors duration-200 group w-full sm:w-auto"
+            >
+              <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg bg-red-100/80 flex items-center justify-center mr-2 lg:mr-3 group-hover:bg-red-200/80 transition-colors">
+                <ExternalLink className="h-3 w-3 lg:h-4 lg:w-4 text-red-600" />
+              </div>
+              <span className="hidden sm:inline">View PDF Document</span>
+              <span className="sm:hidden">View PDF</span>
+            </button>
           </div>
         </div>
       )}
@@ -199,7 +178,7 @@ const ResponseDisplay = ({ response }) => {
               ),
             }}
           >
-            {response.response}
+            {response.analysis}
           </ReactMarkdown>
         </div>
       </div>
